@@ -24,7 +24,7 @@
     
     $cliemailaddress = get_config('local_quizattemptsnotification', 'cliemailaddress');
     
-    $sql = "SELECT CONCAT(c.id,q.id,u.id) as uniqueid,c.shortname as coursename,q.name as quizname,CONCAT(u.firstname,' ',u.lastname) as username,gi.gradepass as gradepass,qg.grade as finalgrade, FROM_UNIXTIME(A.finishtime, '%d-%m-%Y %H:%i:%s') as finishtime, md.id as quizreviewattemptsid
+    $sql = "SELECT CONCAT(c.id,q.id,u.id) as uniqueid,c.shortname as coursename,q.name as quizname,CONCAT(u.firstname,' ',u.lastname) as username,gi.gradepass as gradepass,qg.grade as finalgrade, FROM_UNIXTIME(A.finishtime, '%d-%m-%Y %H:%i:%s') as finishtime, md.id as quizreviewattemptsid, q.id as quid
             FROM {quiz} q
             JOIN
             (SELECT qa1.quiz, qa1.userid, SUM(1) AS Maxattempt, MAX(qa1.timefinish) as finishtime
@@ -97,7 +97,7 @@
                              $qz->gradepass." | ".
                              $qz->finalgrade." | ".
                              $qz->finishtime." | ".
-                             $CFG->wwwroot.'/mod/quiz/report.php?id='.$qz->quizreviewattemptsid.'&mode=overview'."\r\n\r\n";
+                             $CFG->wwwroot.'/mod/quiz/report.php?q='.$qz->quid.'&mode=overview'."\r\n\r\n";
            }
            
            $emailbody .= '!! Those records were generated from system, please do not reply this email, thanks !!';
